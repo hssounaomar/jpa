@@ -6,10 +6,8 @@
             <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/META-INF/persistence.xml</file>
             <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/dao/PersonneDAO.java</file>
             <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/jpa/Main.java</file>
-            <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/jpa/view.fxml</file>
-            <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/entites/Personne.java</file>
+            <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/controllers/PersonneJpaController.java</file>
             <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/jpa/ViewController.java</file>
-            <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/entites/PersonneJpaController.java</file>
         </group>
     </open-files>
 </project-private>

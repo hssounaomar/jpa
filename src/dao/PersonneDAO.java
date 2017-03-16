@@ -34,4 +34,7 @@ private PersonneJpaController jpaController;
     public  void removePersonne(Integer id) throws NonexistentEntityException{
         jpaController.destroy(id);
     }
+    public  void update(Personne personne) throws Exception{
+        jpaController.edit(personne);
+    }
 }
