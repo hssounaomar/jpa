@@ -14,12 +14,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
 /**
@@ -30,40 +35,44 @@ import javafx.util.Callback;
 public class ViewController implements Initializable {
 
     @FXML
-    private TextField text_name;
+    private TextField text_email;
+    @FXML
+    private PasswordField text_password;
     @FXML
     private Button btn_add;
     @FXML
     private Button btn_remove;
     @FXML
-    private ListView<Personne> row_personnes;
-    private ObservableList<Personne> personnes_list=FXCollections.observableArrayList();
+    private TableView<Personne> table;
+    @FXML
+    private TableColumn<Personne,Integer> id;
+    @FXML
+    private TableColumn<Personne,String> email;
+    @FXML
+    private TableColumn<Personne,String> password;
+    
     private final PersonneDAO dao=new PersonneDAO();
-
+private ObservableList<Personne> personnes_list=FXCollections.observableArrayList(dao.getList());
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        row_personnes.setItems(personnes_list);
-        personnes_list.addAll(dao.getList());
-       //add Personne
-    btn_add.setOnAction(e->{
-       String str= text_name.getText().toString();
-      Personne per= new Personne();
-      per.setEmail(str);
-      per.setPassword(str);
-       dao.addPersonne(per);
-    });
-    //Remove Personne
-    btn_remove.setOnAction(e->{
-     String  str=  text_name.getText().toString();
-     Integer id= Integer.parseInt(str);
-            try {
-                dao.removePersonne(id);
-            } catch (NonexistentEntityException ex) {
-                Logger.getLogger(ViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-    });
+  
+ id.setCellValueFactory(new PropertyValueFactory<Personne,Integer>("Id"));
+ email.setCellValueFactory(new PropertyValueFactory<Personne,String>("Email"));
+ password.setCellValueFactory(new PropertyValueFactory<Personne,String>("Password"));
+ table.setItems(personnes_list);
 }
+    public void addPersonne(Event e){
+       if((text_email.getText()!=null)&&(text_password.getText()!=null)){
+           Personne per=new Personne();
+           per.setEmail(text_email.getText().toString());
+           per.setPassword(text_password.getText().toString());
+           dao.addPersonne(per);
+           personnes_list.clear();
+           personnes_list.addAll(dao.getList());
+           table.setItems(personnes_list);
+       }
+    }
 }

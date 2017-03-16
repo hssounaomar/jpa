@@ -5,8 +5,8 @@
  */
 package dao;
 
+import controllers.PersonneJpaController;
 import entites.Personne;
-import entites.PersonneJpaController;
 import entites.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
