@@ -1,11 +1,10 @@
-package controllers;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import entites.Personne;
+package entites;
+
 import entites.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
@@ -13,7 +12,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -21,9 +19,9 @@ import javax.persistence.criteria.Root;
  *
  * @author Ideal-Info
  */
-public class PersonneJpaController implements Serializable {
+public class ProduitJpaController implements Serializable {
 
-    public PersonneJpaController(EntityManagerFactory emf) {
+    public ProduitJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -32,12 +30,12 @@ public class PersonneJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Personne personne) {
+    public void create(Produit produit) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(personne);
+            em.persist(produit);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -46,19 +44,19 @@ public class PersonneJpaController implements Serializable {
         }
     }
 
-    public void edit(Personne personne) throws NonexistentEntityException, Exception {
+    public void edit(Produit produit) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            personne = em.merge(personne);
+            produit = em.merge(produit);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = personne.getId();
-                if (findPersonne(id) == null) {
-                    throw new NonexistentEntityException("The personne with id " + id + " no longer exists.");
+                Integer id = produit.getId();
+                if (findProduit(id) == null) {
+                    throw new NonexistentEntityException("The produit with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -74,14 +72,14 @@ public class PersonneJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Personne personne;
+            Produit produit;
             try {
-                personne = em.getReference(Personne.class, id);
-                personne.getId();
+                produit = em.getReference(Produit.class, id);
+                produit.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The personne with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The produit with id " + id + " no longer exists.", enfe);
             }
-            em.remove(personne);
+            em.remove(produit);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -90,19 +88,19 @@ public class PersonneJpaController implements Serializable {
         }
     }
 
-    public List<Personne> findPersonneEntities() {
-        return findPersonneEntities(true, -1, -1);
+    public List<Produit> findProduitEntities() {
+        return findProduitEntities(true, -1, -1);
     }
 
-    public List<Personne> findPersonneEntities(int maxResults, int firstResult) {
-        return findPersonneEntities(false, maxResults, firstResult);
+    public List<Produit> findProduitEntities(int maxResults, int firstResult) {
+        return findProduitEntities(false, maxResults, firstResult);
     }
 
-    private List<Personne> findPersonneEntities(boolean all, int maxResults, int firstResult) {
+    private List<Produit> findProduitEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Personne.class));
+            cq.select(cq.from(Produit.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -114,20 +112,20 @@ public class PersonneJpaController implements Serializable {
         }
     }
 
-    public Personne findPersonne(Integer id) {
+    public Produit findProduit(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Personne.class, id);
+            return em.find(Produit.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getPersonneCount() {
+    public int getProduitCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Personne> rt = cq.from(Personne.class);
+            Root<Produit> rt = cq.from(Produit.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
@@ -135,22 +133,5 @@ public class PersonneJpaController implements Serializable {
             em.close();
         }
     }
-
-    public Personne findPersonneByLogin(String str, String password) {
-        EntityManager em = getEntityManager();
-
-        return (Personne) em.createQuery(
-                "SELECT c FROM Personne c WHERE c.email LIKE :email AND c.password LIKE :password")
-                .setParameter("email", str)
-                .setParameter("password", password)
-                .setMaxResults(10).getSingleResult();
-    }
-
-    public Personne getPersonneByEmail(String email) {
-        EntityManager em = getEntityManager();
-
-        return (Personne) em.createQuery(
-                "SELECT c FROM Personne c WHERE c.email LIKE :email")
-                .setParameter("email", email).getSingleResult();
-    }
+    
 }

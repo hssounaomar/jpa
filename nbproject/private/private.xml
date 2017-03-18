@@ -3,11 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/META-INF/persistence.xml</file>
-            <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/dao/PersonneDAO.java</file>
+            <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/jpa/user.fxml</file>
+            <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/jpa/User.java</file>
             <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/jpa/Main.java</file>
-            <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/controllers/PersonneJpaController.java</file>
-            <file>file:/C:/Users/Ideal-Info/Documents/NetBeansProjects/jpa/src/jpa/ViewController.java</file>
         </group>
     </open-files>
 </project-private>

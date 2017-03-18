@@ -33,7 +33,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btn_remove" mnemonicParsing="false" text="Remove">
+                  <Button fx:id="btn_remove" mnemonicParsing="false" onAction="#connectPersonne" text="Connect">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

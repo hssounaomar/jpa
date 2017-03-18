@@ -37,4 +37,10 @@ private PersonneJpaController jpaController;
     public  void update(Personne personne) throws Exception{
         jpaController.edit(personne);
     }
+    public Personne getPersonnesByQuery(String email,String password){
+       return jpaController.findPersonneByLogin(email, password);
+    }
+    public Personne getPersonneByEmail(String email){
+        return jpaController.getPersonneByEmail(email);
+    }
 }

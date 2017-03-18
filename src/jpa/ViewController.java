@@ -7,25 +7,33 @@ package jpa;
 
 import dao.PersonneDAO;
 import entites.Personne;
-import java.awt.print.Book;
+import java.awt.Insets;
+import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javax.persistence.NoResultException;
 
 /**
  * FXML Controller class
@@ -59,23 +67,22 @@ public class ViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         id.setCellValueFactory(new PropertyValueFactory<Personne, Integer>("Id"));
         email.setCellValueFactory(new PropertyValueFactory<Personne, String>("Email"));
         password.setCellValueFactory(new PropertyValueFactory<Personne, String>("Password"));
         password.setCellFactory(TextFieldTableCell.forTableColumn());
-    password.setOnEditCommit((event) -> {
-       event.getNewValue();//la nouvelle valeur
-     Personne per=  event.getRowValue();
-     per.setPassword(event.getNewValue());
+        password.setOnEditCommit((event) -> {
+            event.getNewValue();//la nouvelle valeur
+            Personne per = event.getRowValue();
+            per.setPassword(event.getNewValue());
             try {
                 dao.update(per);
             } catch (Exception ex) {
                 ex.fillInStackTrace();
             }
-        
-    });
 
+        });
 
         table.setItems(personnes_list);
 
@@ -84,17 +91,55 @@ public class ViewController implements Initializable {
     }
 
     public void addPersonne(Event e) {
+
         if ((text_email.getText() != null) && (text_password.getText() != null)) {
-            Personne per = new Personne();
-            per.setEmail(text_email.getText().toString());
-            per.setPassword(text_password.getText().toString());
-            dao.addPersonne(per);
-            personnes_list.clear();
-            personnes_list.addAll(dao.getList());
+            try {
+                dao.getPersonneByEmail(text_email.getText());
+                 System.err.println("Votre Email ");
+            }catch(Exception ex){
+                Personne per = new Personne();
+                per.setEmail(text_email.getText().toString());
+                per.setPassword(text_password.getText().toString());
+                dao.addPersonne(per);
+                personnes_list.clear();
+                personnes_list.addAll(dao.getList());
+            }
+                
+           
 
         }
     }
-    public void removePersonne(Event e){
-        
+
+    @FXML
+    public void connectPersonne(ActionEvent e) throws IOException  {
+        try {
+
+            Personne per = dao.getPersonnesByQuery(text_email.getText(), text_password.getText());
+            
+                Stage primaryStage = new Stage();
+                FXMLLoader loader = new FXMLLoader();
+                Pane root = loader.load(this.getClass().getResource("user.fxml").openStream());
+                User user = (User) loader.getController();
+                user.getUser(text_email.getText());
+                Scene scene = new Scene(root);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            
+              
+            
+
+        } 
+        catch(NoResultException ex){
+           Stage primaryStage = new Stage();
+                FXMLLoader loader = new FXMLLoader();
+                Pane root = loader.load(getClass().getResource("messageBox.fxml").openStream());
+                Scene scene = new Scene(root);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+        }
+        catch(IOException ioe){
+            
+        }
+
     }
 }
